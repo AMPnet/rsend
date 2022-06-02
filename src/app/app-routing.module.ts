@@ -9,8 +9,7 @@ import {RequestSendActionComponent} from './request-send/request-send-action/req
 const routes: Routes = [
   {
     path: '', component: AppLayoutComponent, children: [
-      {path: '', pathMatch: 'full', redirectTo: 'home'},
-      {path: 'home', component: HomeComponent},
+      {path: '', pathMatch: 'full', component: HomeComponent},
       {
         path: 'request-send', canActivate: [], children: [
           {path: 'new', component: RequestSendNewComponent},
