@@ -4,6 +4,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket'
 export enum ChainID {
   MUMBAI_TESTNET = 80001, // Polygon Testnet
   MATIC_MAINNET = 137, // Polygon
+  AURORA_MAINNET = 1313161554
 }
 
 export interface Network {
@@ -65,9 +66,25 @@ export const MaticNetwork: Network = {
   appConfig: {},
 }
 
+export const AuroraNetwork: Network = {
+  chainID: ChainID.AURORA_MAINNET,
+  name: 'Aurora',
+  shortName: 'aurora',
+  nativeCurrency: {
+    name: 'ETH',
+    symbol: 'ETH',
+  },
+  maxGasPrice: 20,
+  rpcURLs: ['https://mainnet.aurora.dev'],
+  wssRpcURLs: ['wss://mainnet.aurora.dev'],
+  explorerURLs: ['https://aurorascan.dev/'],
+  appConfig: {},
+}
+
 export const Networks: { [key in ChainID]: Network } = {
   [ChainID.MUMBAI_TESTNET]: MumbaiNetwork,
   [ChainID.MATIC_MAINNET]: MaticNetwork,
+  [ChainID.AURORA_MAINNET]: AuroraNetwork,
 }
 
 const getEthersNetwork = (network: Network): providers.Network => ({
