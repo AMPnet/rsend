@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core'
 import {Observable, of, switchMap} from 'rxjs'
-import {FormBuilder, FormGroup, Validators} from '@angular/forms'
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
 import {Erc20Service, ERC20TokenData} from '../../shared/services/blockchain/erc20.service'
 import {PreferenceQuery} from '../../preference/state/preference.query'
 import {ConversionService} from '../../shared/services/conversion.service'
@@ -17,11 +17,11 @@ import {getWindow} from '../../shared/utils/browser'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestSendNewComponent {
-  newRequestSendForm: FormGroup
+  newRequestSendForm: UntypedFormGroup
   asset$: Observable<ERC20TokenData | undefined>
 
   constructor(private requestSendService: RequestSendService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private erc20Service: Erc20Service,
               private preferenceQuery: PreferenceQuery,
               private conversion: ConversionService,
