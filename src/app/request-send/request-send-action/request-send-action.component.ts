@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ɵmarkDirty} from '@angular/core'
 import {BehaviorSubject, combineLatest, concatMap, from, Observable, of} from 'rxjs'
 import {switchMapTap, withStatus, WithStatus} from '../../shared/utils/observables'
-import {AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms'
+import {AbstractControl, AsyncValidatorFn, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, Validators} from '@angular/forms'
 import {BigNumber, constants} from 'ethers'
 import {RequestSend, RequestSendService} from '../request-send.service'
 import {SessionQuery} from '../../session/state/session.query'
@@ -33,11 +33,11 @@ export class RequestSendActionComponent {
   isUserLoggedIn$ = this.sessionQuery.isLoggedIn$
   shouldTransfer$: Observable<boolean>
 
-  transferForm: FormGroup
+  transferForm: UntypedFormGroup
 
   bigNumberConstants = constants
 
-  constructor(private fb: FormBuilder,
+  constructor(private fb: UntypedFormBuilder,
               private requestSendService: RequestSendService,
               private sessionQuery: SessionQuery,
               private preferenceQuery: PreferenceQuery,

@@ -2,6 +2,7 @@ import {providers} from 'ethers'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
 export enum ChainID {
+  ETHEREUM_MAINNET = 1,
   MUMBAI_TESTNET = 80001, // Polygon Testnet
   MATIC_MAINNET = 137, // Polygon
   AURORA_MAINNET = 1313161554
@@ -24,6 +25,23 @@ export interface Network {
 
 interface AppConfig {
   // TODO: set app config
+}
+
+export const EthereumNetwork: Network = {
+  chainID: ChainID.ETHEREUM_MAINNET,
+  name: 'Ethereum',
+  shortName: 'ethereum',
+  nativeCurrency: {
+    name: 'ETH',
+    symbol: 'ETH',
+  },
+  maxGasPrice: 200,
+  rpcURLs: ['https://nd-780-582-313.p2pify.com/c0578ff688865466414976fe0868c558'],
+  wssRpcURLs: [
+    'wss://ws-nd-780-582-313.p2pify.com/c0578ff688865466414976fe0868c558',
+  ],
+  explorerURLs: ['https://etherscan.io/'],
+  appConfig: {},
 }
 
 export const MumbaiNetwork: Network = {
@@ -82,6 +100,7 @@ export const AuroraNetwork: Network = {
 }
 
 export const Networks: { [key in ChainID]: Network } = {
+  [ChainID.ETHEREUM_MAINNET]: EthereumNetwork,
   [ChainID.MUMBAI_TESTNET]: MumbaiNetwork,
   [ChainID.MATIC_MAINNET]: MaticNetwork,
   [ChainID.AURORA_MAINNET]: AuroraNetwork,

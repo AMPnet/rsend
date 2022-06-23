@@ -8,7 +8,7 @@ import {MetamaskSubsignerService} from '../shared/services/subsigners/metamask-s
 import {WalletConnectSubsignerService} from '../shared/services/subsigners/walletconnect-subsigner.service'
 import {MatDialogRef} from '@angular/material/dialog'
 import {getWindow} from '../shared/utils/browser'
-import {FormBuilder} from '@angular/forms'
+import {UntypedFormBuilder} from '@angular/forms'
 import {Router} from '@angular/router'
 
 @Component({
@@ -26,7 +26,7 @@ export class AuthComponent {
               private walletConnectSubsignerService: WalletConnectSubsignerService,
               private preferenceQuery: PreferenceQuery,
               private router: Router,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               @Optional() private dialogRef: MatDialogRef<AuthComponent>) {
   }
 
