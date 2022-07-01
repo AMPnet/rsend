@@ -5,6 +5,11 @@ export enum ChainID {
   ETHEREUM_MAINNET = 1,
   MUMBAI_TESTNET = 80001, // Polygon Testnet
   MATIC_MAINNET = 137, // Polygon
+  BSC = 56,
+  XDAI = 100,
+  FANTOM = 250,
+  MOONRIVER = 1285,
+  AVAX = 43114,
   AURORA_MAINNET = 1313161554
 }
 
@@ -84,6 +89,91 @@ export const MaticNetwork: Network = {
   appConfig: {},
 }
 
+export const BscNetwork: Network = {
+  chainID: ChainID.BSC,
+  name: 'BSC',
+  shortName: 'bsc',
+  nativeCurrency: {
+    name: 'BNB',
+    symbol: 'BNB',
+  },
+  maxGasPrice: 100,
+  rpcURLs: ['https://bsc-dataseed.binance.org/'],
+  wssRpcURLs: [
+    'wss://bsc-ws-node.nariox.org:443',
+  ],
+  explorerURLs: ['https://bscscan.com/'],
+  appConfig: {},
+}
+
+export const XdaiNetwork: Network = {
+  chainID: ChainID.XDAI,
+  name: 'xDai/Gnosis',
+  shortName: 'gnosis',
+  nativeCurrency: {
+    name: 'XDAI',
+    symbol: 'XDAI',
+  },
+  maxGasPrice: 200,
+  rpcURLs: ['https://rpc.xdaichain.com'],
+  wssRpcURLs: [
+    'wss://rpc.gnosischain.com/wss',
+  ],
+  explorerURLs: ['https://blockscout.com/xdai/mainnet'],
+  appConfig: {},
+}
+
+export const FantomNetwork: Network = {
+  chainID: ChainID.FANTOM,
+  name: 'Fantom',
+  shortName: 'fantom',
+  nativeCurrency: {
+    name: 'FTM',
+    symbol: 'FTM',
+  },
+  maxGasPrice: 100,
+  rpcURLs: ['https://rpc.ftm.tools'],
+  wssRpcURLs: [
+    'wss://fantom-mainnet.public.blastapi.io',
+  ],
+  explorerURLs: ['https://ftmscan.com/'],
+  appConfig: {},
+}
+
+export const MoonriverNetwork: Network = {
+  chainID: ChainID.MOONRIVER,
+  name: 'Moonriver',
+  shortName: 'moonriver',
+  nativeCurrency: {
+    name: 'MOVR',
+    symbol: 'MOVR',
+  },
+    maxGasPrice: 100,
+  rpcURLs: ['https://rpc.moonriver.moonbeam.network'],
+  wssRpcURLs: [
+    'wss://moonriver.public.blastapi.io',
+  ],
+  explorerURLs: ['https://moonriver.moonscan.io/'],
+  appConfig: {},
+}
+
+export const AvaxNetwork: Network = {
+  chainID: ChainID.AVAX,
+  name: 'Avalanche',
+  shortName: 'avalanche',
+  nativeCurrency: {
+    name: 'AVAX',
+    symbol: 'AVAX',
+  },
+  maxGasPrice: 10,
+  rpcURLs: ['https://nd-780-582-313.p2pify.com/c0578ff688865466414976fe0868c558'],
+  wssRpcURLs: [
+    'wss://api.avax.network/ext/bc/C/ws',
+  ],
+  explorerURLs: ['https://snowtrace.io/'],
+  appConfig: {},
+}
+
 export const AuroraNetwork: Network = {
   chainID: ChainID.AURORA_MAINNET,
   name: 'Aurora',
@@ -104,6 +194,11 @@ export const Networks: { [key in ChainID]: Network } = {
   [ChainID.MUMBAI_TESTNET]: MumbaiNetwork,
   [ChainID.MATIC_MAINNET]: MaticNetwork,
   [ChainID.AURORA_MAINNET]: AuroraNetwork,
+  [ChainID.BSC]: BscNetwork,
+  [ChainID.XDAI]: XdaiNetwork,
+  [ChainID.FANTOM]: FantomNetwork,
+  [ChainID.MOONRIVER]: MoonriverNetwork,
+  [ChainID.AVAX]: AvaxNetwork
 }
 
 const getEthersNetwork = (network: Network): providers.Network => ({
