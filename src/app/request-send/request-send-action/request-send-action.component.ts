@@ -1,9 +1,16 @@
 import {ChangeDetectionStrategy, Component, ɵmarkDirty} from '@angular/core'
 import {BehaviorSubject, combineLatest, concatMap, from, Observable, of} from 'rxjs'
-import {switchMapTap, withStatus, WithStatus} from '../../shared/utils/observables'
-import {AbstractControl, AsyncValidatorFn, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, Validators} from '@angular/forms'
+import {switchMapTap, withInterval, WithStatus, withStatus} from '../../shared/utils/observables'
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  ValidationErrors,
+  Validators
+} from '@angular/forms'
 import {BigNumber, constants} from 'ethers'
-import {RequestSend, RequestSendService} from '../request-send.service'
+import {AssetType, RequestSend, RequestSendService} from '../request-send.service'
 import {SessionQuery} from '../../session/state/session.query'
 import {PreferenceQuery} from '../../preference/state/preference.query'
 import {SignerService} from '../../shared/services/signer.service'
@@ -61,13 +68,29 @@ export class RequestSendActionComponent {
       )
     }
 
+    const nativeTokenBalance$ = combineLatest([
+      this.sessionQuery.provider$, this.preferenceQuery.address$,
+    ]).pipe(
+      switchMap(([provider, address]) => {
+        if (!address) return of(constants.Zero)
+
+        return withInterval(from(provider.getBalance(address)), 3_000)
+      }),
+      shareReplay({bufferSize: 1, refCount: true}),
+    )
+
     this.state$ = this.refreshRequestSend.asObservable().pipe(
       switchMap(() => requestSendService.getRequest(requestSendID)),
       tap(req => this.preferenceStore.update({chainID: req.chain_id})),
       switchMap(requestSend => combineLatest([
         of(requestSend),
-        this.erc20Service.getData(requestSend.token_address),
-        tokenBalance$(requestSend.token_address),
+        requestSend.asset_type == AssetType.Native ? of({
+          address: "0x0",
+          name: this.preferenceQuery.network.nativeCurrency.name,
+          symbol: this.preferenceQuery.network.nativeCurrency.symbol,
+          decimals: 18
+        }) : this.erc20Service.getData(requestSend.token_address),
+        requestSend.asset_type == AssetType.Native ? nativeTokenBalance$ : tokenBalance$(requestSend.token_address),
         this.preferenceQuery.network$,
       ])),
       map(([requestSend, tokenData, balance, network]) => ({
@@ -104,32 +127,42 @@ export class RequestSendActionComponent {
   transfer(state: RequestSendState) {
     return () => {
       return this.signerService.ensureAuth.pipe(
-        map(signer => ERC20__factory.connect(state.tokenData.address, signer)),
-        switchMap(contract => this.dialogService.waitingApproval(
-          combineLatest([of(contract), this.gasService.overrides]).pipe(
-            concatMap(([contract, overrides]) => {
-              const tokenAmount = this.conversion.toToken(
-                state.requestSend.amount, state.tokenData.decimals,
-              )
-
-              return contract.populateTransaction.transfer(
-                state.requestSend.recipient_address, tokenAmount.toString(), overrides,
-              )
-            }),
-            map(tx => {
-              tx.data = state.requestSend.send_tx.data
-              return tx
-            }),
-            switchMap(tx => this.signerService.sendTransaction(tx)),
-          ),
-        )),
+        switchMap(signer => state.requestSend.asset_type === AssetType.Native ?
+          this.dialogService.waitingApproval(
+            from(signer.populateTransaction({
+              to: state.requestSend.recipient_address,
+              data: state.requestSend.send_tx.data,
+              value: state.requestSend.amount,
+            })).pipe(
+              switchMap(tx => this.signerService.sendTransaction(tx)),
+            ),
+          ) :
+          of(ERC20__factory.connect(state.tokenData.address, signer)).pipe(
+            switchMap(contract => this.dialogService.waitingApproval(
+              combineLatest([of(contract), this.gasService.overrides]).pipe(
+                concatMap(([contract, overrides]) => {
+                  const tokenAmount = this.conversion.toToken(
+                    state.requestSend.amount, state.tokenData.decimals,
+                  )
+                  return contract.populateTransaction.transfer(
+                    state.requestSend.recipient_address, tokenAmount.toString(), overrides,
+                  )
+                }),
+                map(tx => {
+                  tx.data = state.requestSend.send_tx.data
+                  return tx
+                }),
+                switchMap(tx => this.signerService.sendTransaction(tx)),
+              ),
+            )),
+          )),
         switchMap(tx => this.dialogService.waitingTransaction(
           from(this.sessionQuery.provider.waitForTransaction(tx.hash)),
         )),
         this.errorService.handleError(),
         switchMapTap(tx => this.requestSendService.updateRequest(state.requestSend.id, {
           tx_hash: tx.transactionHash,
-          caller_address: this.preferenceQuery.getValue().address
+          caller_address: this.preferenceQuery.getValue().address,
         })),
         tap(() => this.refreshRequestSend.next()),
         switchMap(() => this.dialogService.success({
@@ -138,6 +171,7 @@ export class RequestSendActionComponent {
       )
     }
   }
+
 
   private amountValidator(state$: Observable<RequestSendState>): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {

@@ -1,5 +1,5 @@
 import {Injectable, Pipe, PipeTransform} from '@angular/core'
-import {Observable} from 'rxjs'
+import {Observable, of} from 'rxjs'
 import {Erc20Service, ERC20TokenData} from '../services/blockchain/erc20.service'
 
 @Injectable({
@@ -13,6 +13,17 @@ export class AssetDataPipe implements PipeTransform {
   }
 
   transform(value: any, opt?: 'tokenOnly'): Observable<ERC20TokenData> {
-    return this.erc20Service.getData(value)
+    if(value) {
+      return this.erc20Service.getData(value)
+    } else {
+      return of(
+        {
+          address: "0x0",
+          name: "Native Coin",
+          decimals: 18,
+          symbol: "Native"
+        }
+      )
+    }
   }
 }

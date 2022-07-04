@@ -55,6 +55,15 @@ export class Erc20Service {
     )
   }
 
+  nativeBalance$(address: string): Observable<BigNumber | undefined> {
+    return combineLatest([
+      this.sessionQuery.provider$,
+      this.preferenceQuery.address$
+    ]).pipe(
+      switchMap(([provider, address]) => !address ? of(undefined) : provider.getBalance(address))
+    )
+  }
+
   getAllowance$(token: string, spender: string): Observable<BigNumber> {
     return combineLatest([
       this.sessionQuery.provider$.pipe(

@@ -20,6 +20,7 @@ export interface Network {
   nativeCurrency: {
     name: string,
     symbol: string;
+    logo?: string;
   },
   maxGasPrice: number,
   rpcURLs: string[],
@@ -96,11 +97,12 @@ export const BscNetwork: Network = {
   nativeCurrency: {
     name: 'BNB',
     symbol: 'BNB',
+    logo: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png?1644979850',
   },
   maxGasPrice: 100,
   rpcURLs: ['https://bsc-dataseed.binance.org/'],
   wssRpcURLs: [
-    'wss://bsc-ws-node.nariox.org:443',
+    'wss://ws-nd-619-004-777.p2pify.com/22b20ec4d0ae4cd45c24ab0b1117694b',
   ],
   explorerURLs: ['https://bscscan.com/'],
   appConfig: {},
@@ -113,6 +115,7 @@ export const XdaiNetwork: Network = {
   nativeCurrency: {
     name: 'XDAI',
     symbol: 'XDAI',
+    logo: 'https://assets.coingecko.com/coins/images/11062/small/Identity-Primary-DarkBG.png?1638372986',
   },
   maxGasPrice: 200,
   rpcURLs: ['https://rpc.xdaichain.com'],
@@ -130,6 +133,7 @@ export const FantomNetwork: Network = {
   nativeCurrency: {
     name: 'FTM',
     symbol: 'FTM',
+    logo: 'https://assets.coingecko.com/coins/images/4001/small/Fantom.png?1558015016',
   },
   maxGasPrice: 100,
   rpcURLs: ['https://rpc.ftm.tools'],
@@ -147,6 +151,7 @@ export const MoonriverNetwork: Network = {
   nativeCurrency: {
     name: 'MOVR',
     symbol: 'MOVR',
+    logo: 'https://assets.coingecko.com/coins/images/17984/small/9285.png?1630028620',
   },
     maxGasPrice: 100,
   rpcURLs: ['https://rpc.moonriver.moonbeam.network'],
@@ -164,11 +169,12 @@ export const AvaxNetwork: Network = {
   nativeCurrency: {
     name: 'AVAX',
     symbol: 'AVAX',
+    logo: 'https://assets.coingecko.com/coins/images/12559/small/coin-round-red.png?1604021818',
   },
   maxGasPrice: 10,
-  rpcURLs: ['https://nd-780-582-313.p2pify.com/c0578ff688865466414976fe0868c558'],
+  rpcURLs: ['https://nd-127-945-798.p2pify.com/274126562966c3ab8b53d777155be7f7/ext/bc/C/rpc'],
   wssRpcURLs: [
-    'wss://api.avax.network/ext/bc/C/ws',
+    'wss://ws-nd-127-945-798.p2pify.com/274126562966c3ab8b53d777155be7f7/ext/bc/C/ws',
   ],
   explorerURLs: ['https://snowtrace.io/'],
   appConfig: {},
@@ -181,6 +187,7 @@ export const AuroraNetwork: Network = {
   nativeCurrency: {
     name: 'ETH',
     symbol: 'ETH',
+    logo: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880',
   },
   maxGasPrice: 20,
   rpcURLs: ['https://mainnet.aurora.dev'],
