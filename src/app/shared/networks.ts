@@ -40,6 +40,7 @@ export const EthereumNetwork: Network = {
   nativeCurrency: {
     name: 'ETH',
     symbol: 'ETH',
+    logo: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880',
   },
   maxGasPrice: 200,
   rpcURLs: ['https://nd-780-582-313.p2pify.com/c0578ff688865466414976fe0868c558'],
@@ -76,6 +77,7 @@ export const MaticNetwork: Network = {
   nativeCurrency: {
     name: 'MATIC',
     symbol: 'MATIC',
+    logo: 'https://assets.coingecko.com/coins/images/4713/small/matic-token-icon.png?1624446912',
   },
   maxGasPrice: 1500,
   rpcURLs: [
