@@ -84,9 +84,9 @@ export const MaticNetwork: Network = {
     'https://polygon-rpc.com',
   ],
   wssRpcURLs: [
+    'wss://ws-matic-mainnet.chainstacklabs.com',
     'wss://ws-nd-159-625-174.p2pify.com/db285116493a92ba6e91417f43a942bd',
     'wss://polygon-mainnet.g.alchemy.com/v2/A8PZz3PJWwX_yQAW5q0JjqaNPPshI9Qg',
-    'wss://ws-matic-mainnet.chainstacklabs.com',
   ],
   explorerURLs: ['https://polygonscan.com/'],
   appConfig: {},
