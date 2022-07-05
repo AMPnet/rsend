@@ -7,7 +7,7 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
   ValidationErrors,
-  Validators
+  Validators,
 } from '@angular/forms'
 import {BigNumber, constants} from 'ethers'
 import {AssetType, RequestSend, RequestSendService} from '../request-send.service'
@@ -85,10 +85,10 @@ export class RequestSendActionComponent {
       switchMap(requestSend => combineLatest([
         of(requestSend),
         requestSend.asset_type == AssetType.Native ? of({
-          address: "0x0",
+          address: '0x0',
           name: this.preferenceQuery.network.nativeCurrency.name,
           symbol: this.preferenceQuery.network.nativeCurrency.symbol,
-          decimals: 18
+          decimals: 18,
         }) : this.erc20Service.getData(requestSend.token_address),
         requestSend.asset_type == AssetType.Native ? nativeTokenBalance$ : tokenBalance$(requestSend.token_address),
         this.preferenceQuery.network$,
@@ -129,11 +129,14 @@ export class RequestSendActionComponent {
       return this.signerService.ensureAuth.pipe(
         switchMap(signer => state.requestSend.asset_type === AssetType.Native ?
           this.dialogService.waitingApproval(
-            from(signer.populateTransaction({
-              to: state.requestSend.recipient_address,
-              data: state.requestSend.send_tx.data,
-              value: state.requestSend.amount,
-            })).pipe(
+            this.gasService.withOverrides(overrides =>
+              signer.populateTransaction({
+                to: state.requestSend.recipient_address,
+                data: state.requestSend.send_tx.data,
+                value: state.requestSend.amount,
+                ...overrides,
+              }),
+            ).pipe(
               switchMap(tx => this.signerService.sendTransaction(tx)),
             ),
           ) :
