@@ -9,13 +9,14 @@ import {RequestSendActionComponent} from './request-send/request-send-action/req
 const routes: Routes = [
   {
     path: '', component: AppLayoutComponent, children: [
-      {path: '', pathMatch: 'full', component: HomeComponent},
+      {path: '', pathMatch: 'full', component: HomeComponent, title: 'dev3'},
       {
         path: 'request-send', canActivate: [], children: [
           {path: 'new', component: RequestSendNewComponent},
           {path: ':id', component: RequestSendShowComponent},
           {path: ':id/action', component: RequestSendActionComponent},
         ],
+        title: 'dev3'
       },
     ],
   },
