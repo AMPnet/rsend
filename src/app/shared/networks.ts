@@ -45,7 +45,7 @@ export const EthereumNetwork: Network = {
   maxGasPrice: 200,
   rpcURLs: ['https://nd-780-582-313.p2pify.com/c0578ff688865466414976fe0868c558'],
   wssRpcURLs: [
-    'wss://ws-nd-780-582-313.p2pify.com/c0578ff688865466414976fe0868c558',
+    'wss://eth-mainnet.g.alchemy.com/v2/cSg25tC3ZafhFoo1_onHhyAI_Y8h4UEF',
   ],
   explorerURLs: ['https://etherscan.io/'],
   appConfig: {},
